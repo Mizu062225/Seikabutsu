@@ -17,6 +17,7 @@ class PostController extends Controller
     {
     $request->validate([
         'body' => 'required|string',
+        'category_id' => 'required|integer|exists:categories,id'
     ]);
 
     auth()->user()->posts()->create($request->all());
