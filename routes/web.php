@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,10 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::middleware('auth')->group(function () {
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/', [PostController::class, 'index'])->name('index');
+    Route::post('/posts/{post}/like', [LikeController::class, 'toggleLike'])->name('posts.like');
+});
 
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-Route::get('/', [PostController::class, 'index'])->name('index');
-Route::post('/posts/{post}/like', [LikeController::class, 'store'])->name('posts.like');
-Route::delete('/posts/{post}/like', [LikeController::class, 'destroy'])->name('posts.unlike');
+require __DIR__.'/auth.php';
