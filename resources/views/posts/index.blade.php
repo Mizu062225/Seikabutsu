@@ -8,45 +8,109 @@
     </head>
     <x-app-layout>
     <body>
-        <h1>タイムライン</h1>
-
-        <form action="{{ route('posts.store') }}" method="POST">
+         <form action="{{ route('posts.store') }}" method="POST">
             @csrf
             <textarea name="body" placeholder="好きにポストしよう" required></textarea>
-            <select name="category_id" required>
-                <option value="" disabled selected>カテゴリを選択</option>
-                <option value="1">音楽</option>
-                <option value="2">服飾</option>
-                <option value="3">美術</option>
-                <option value="4">日常</option>
-            </select>
-            <button type="submit">ポスト</button>
+            <div class="category">
+                <h2>カテゴリー</h2>
+                <select name="category_id">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+             <button type="submit">ポスト</button>
         </form>
+
         
-        <div class='posts'>
-            @foreach ($posts as $post)
-                <div class='post'>
-                    <p>{{ $post->user->name }}: {{ $post->body }}</p>
-                    <small>{{$post->created_at->diffForHumans()}}</small>
-                    <!-- いいねボタン -->
-                    @if ($post->likes->where('user_id', auth()->id())->count())
-                        <form action="{{ route('posts.unlike', $post) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">いいねを取り消す</button>
-                        </form>
-                    @else
-                        <form action="{{ route('posts.like', $post) }}" method="POST">
-                            @csrf
-                            <button type="submit">いいね</button>
-                        </form>
-                    @endif
-            
-                    <!-- いいね数表示 -->
-                    <p>いいね数: {{ $post->likes->count() }}</p>
-                 </div>
+        <div class="tabs">
+            <button class="tab-link" onclick="showTab('all')">総合</button>
+            <button class="tab-link" onclick="showTab('music')">音楽</button>
+            <button class="tab-link" onclick="showTab('fashion')">服飾</button>
+            <button class="tab-link" onclick="showTab('art')">美術</button>
+            <button class="tab-link" onclick="showTab('daily')">日常</button>
+        </div>
+        
+                <!-- 各タブに対応する投稿一覧を表示 -->
+        <div id="all" class="tab-content" style="display:none;">
+            @foreach ($posts as $post) 
+                <p>{{ $post->content }} - <strong>{{ $post->category->name }}</strong></p> 
+                 <!-- いいねボタン -->
+                <form action="{{ route('posts.like', $post->id) }}" method="POST">
+                    @csrf
+                    <button type="submit">
+                        {{ $post->isLikedBy(auth()->user()) ? 'いいねを解除' : 'いいね' }}
+                    </button>
+                    <span>{{ $post->likes->count() }} いいね</span>
+                </form>
             @endforeach
         </div>
-    </body>
+        
+        <div id="music" class="tab-content" style="display:none;">
+            @foreach ($musicPosts as $post)
+                <p>{{ $post->content }}</p>
+                 <!-- いいねボタン -->
+                <form action="{{ route('posts.like', $post->id) }}" method="POST">
+                    @csrf
+                    <button type="submit">
+                        {{ $post->isLikedBy(auth()->user()) ? 'いいねを解除' : 'いいね' }}
+                    </button>
+                    <span>{{ $post->likes->count() }} いいね</span>
+                </form>
+            @endforeach
+        </div>
+        
+        <div id="fashion" class="tab-content" style="display:none;">
+            @foreach ($fashionPosts as $post)
+                <p>{{ $post->content }}</p>
+                <!-- いいねボタン -->
+                <form action="{{ route('posts.like', $post->id) }}" method="POST">
+                    @csrf
+                    <button type="submit">
+                        {{ $post->isLikedBy(auth()->user()) ? 'いいねを解除' : 'いいね' }}
+                    </button>
+                    <span>{{ $post->likes->count() }} いいね</span>
+                </form> 
+            @endforeach
+        </div>
+        
+        <div id="art" class="tab-content" style="display:none;">
+            @foreach ($artPosts as $post)
+                <p>{{ $post->content }}</p>
+                 <!-- いいねボタン -->
+                <form action="{{ route('posts.like', $post->id) }}" method="POST">
+                    @csrf
+                    <button type="submit">
+                        {{ $post->isLikedBy(auth()->user()) ? 'いいねを解除' : 'いいね' }}
+                    </button>
+                    <span>{{ $post->likes->count() }} いいね</span>
+                </form>
+            @endforeach
+        </div>
+        
+        <div id="daily" class="tab-content" style="display:none;">
+            @foreach ($dailyPosts as $post)
+                <p>{{ $post->content }}</p>
+                 <!-- いいねボタン -->
+                <form action="{{ route('posts.like', $post->id) }}" method="POST">
+                    @csrf
+                    <button type="submit">
+                        {{ $post->isLikedBy(auth()->user()) ? 'いいねを解除' : 'いいね' }}
+                    </button>
+                    <span>{{ $post->likes->count() }} いいね</span>
+                </form>
+            @endforeach
+        </div>
+        
+        <script>
+            function showTab(tabId) {
+                var tabs = document.querySelectorAll('.tab-content');
+                tabs.forEach(function(tab) {
+                    tab.style.display = 'none';
+                });
+                document.getElementById(tabId).style.display = 'block';
+            }
+        </script>
+     </body>
     </x-app-layout>
 </html>
