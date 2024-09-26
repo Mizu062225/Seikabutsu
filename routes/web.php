@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/', [PostController::class, 'index'])->name('index');
-    Route::post('/posts/{post}/like', [LikeController::class, 'toggleLike'])->name('posts.like');
+    Route::post('/like', [LikeController::class, 'store'])->name('like.store');
 });
 
 require __DIR__.'/auth.php';

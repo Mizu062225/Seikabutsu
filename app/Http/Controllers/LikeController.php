@@ -8,20 +8,20 @@ use App\Models\Post;
 
 class LikeController extends Controller
 {
-    public function toggleLike($postId)
+    public function store(Request $request)
     {
-        $post = Post::findOrFail($postId);
-        $user = auth()->user();
-    
-        // すでにいいねしているか確認
-        if ($post->isLikedBy($user)) {
-            // いいねを削除
-            $post->likes()->where('user_id', $user->id)->delete();
-            return redirect()->back()->with('success', 'いいねを解除しました');
+        $user_id = $request["user_id"];
+        $post_id = $request["post_id"];
+        $liked = Like::where("user_id", $user_id)->where("post_id", $post_id)->first();
+        
+        if($liked) {
+            $liked->delete();
         } else {
-            // いいねを追加
-            $post->likes()->create(['user_id' => $user->id]);
-            return redirect()->back()->with('success', 'いいねしました');
+            $like = new Like();
+            $like->post_id = $post_id;
+            $like->user_id = $user_id;
+            $like->save();
         }
+        return redirect()->route('posts.index');
     }
 }

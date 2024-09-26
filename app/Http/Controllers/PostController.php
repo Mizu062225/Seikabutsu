@@ -13,24 +13,24 @@ class PostController extends Controller
         $categories = Category::all();
 
          // 投稿を取得（例として全投稿を取得）
-        $posts = Post::all();
-        $musicPosts = Post::where('category_id', 1)->get(); // 音楽カテゴリ
-        $fashionPosts = Post::where('category_id', 2)->get(); // 服飾カテゴリ
-        $artPosts = Post::where('category_id', 3)->get(); // 美術カテゴリ
-        $dailyPosts = Post::where('category_id', 4)->get(); // 日常カテゴリ
+        $posts = Post::orderBy("updated_at", "DESC")->get();
+        $musicPosts = Post::where('category_id', 1)->orderBy("updated_at", "DESC")->get(); // 音楽カテゴリ
+        $fashionPosts = Post::where('category_id', 2)->orderBy("updated_at", "DESC")->get(); // 服飾カテゴリ
+        $artPosts = Post::where('category_id', 3)->orderBy("updated_at", "DESC")->get(); // 美術カテゴリ
+        $dailyPosts = Post::where('category_id', 4)->orderBy("updated_at", "DESC")->get(); // 日常カテゴリ
     
         return view('posts.index', compact('categories', 'posts', 'musicPosts', 'fashionPosts', 'artPosts', 'dailyPosts'));
     }
     
     public function store(Request $request)
     {
-    $request->validate([
+    $validated = $request->validate([
         'body' => 'required|string',
         'category_id' => 'required|integer|exists:categories,id'
     ]);
 
     $post = new Post();
-    $post->content = $validated['content'];
+    $post->body = $validated['body'];
     $post->category_id = $validated['category_id'];
     $post->user_id = auth()->id(); // ユーザーIDを保存
     $post->save();
