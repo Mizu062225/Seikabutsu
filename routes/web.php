@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('index');
     Route::post('/like', [LikeController::class, 'store'])->name('like.store');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/follows', [FollowController::class, 'index'])->name('follow.index');
+});
+
+Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
+Route::post('/users/{user}/follow', [FollowController::class, 'store'])->name('user.follow');
+Route::delete('/users/{user}/unfollow', [FollowController::class, 'destroy'])->name('user.unfollow');
+Route::get('/users/{user}/followers-followings', [UserController::class, 'followersFollowings'])->name('user.followers_followings');
 
 require __DIR__.'/auth.php';

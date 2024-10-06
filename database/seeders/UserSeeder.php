@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create();
+        
         
         DB::table('users')->insert([
                 'name' => 'test',
@@ -28,5 +28,17 @@ class UserSeeder extends Seeder
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
          ]);
+        
+        DB::table('users')->insert([
+                'name' => 'test2',
+                'email' => 'test2@test',
+                'email_verified_at' => now(),
+                'password' => Hash::make('testtest2'),
+                'remember_token' => Str::random(10),
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
+         
+        User::factory()->count(10)->create();
     }
 }
