@@ -17,9 +17,9 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 1,
-            'category_id' => 1,
-            'body' => fake()->text($maxNbChars = 6),
+            'user_id' => fake()->randomElement([1, 2, 3, 4]),
+            'category_id' => fake()->randomElement([1, 2, 3, 4]),
+            'body' => fake()->text($maxNbChars = 30),
             'image_url' => "https://www.momastore.jp/img/goods/2/4589593767843_2_detail.jpg"
         ];
     }
