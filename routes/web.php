@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,5 +50,9 @@ Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
 Route::post('/users/{user}/follow', [FollowController::class, 'store'])->name('user.follow');
 Route::delete('/users/{user}/unfollow', [FollowController::class, 'destroy'])->name('user.unfollow');
 Route::get('/users/{user}/followers-followings', [UserController::class, 'followersFollowings'])->name('user.followers_followings');
+
+Route::get('/chats', [ChatController::class, 'chatList'])->name('chats.list');
+Route::get('/chat/{user}', [ChatController::class, 'openChat'])->name('chat.open');
+Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
 
 require __DIR__.'/auth.php';

@@ -195,5 +195,9 @@
             
         }
         
+        //☆押したらいいね数＋１かー１
+        //色反転
+        //☆押したら/likeにポスト
+        //https://qiita.com/kaitoppp/items/bd98c848fde85f6b5098#%E5%AE%9F%E8%A3%857-js%E3%81%A8css%E3%82%92%E5%88%A5%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%A7%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%80
     </script>
 </x-app-layout>

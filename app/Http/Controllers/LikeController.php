@@ -22,6 +22,6 @@ class LikeController extends Controller
             $like->user_id = $user_id;
             $like->save();
         }
-        return redirect()->route('posts.index');
+        //return redirect()->route('posts.index');
     }
 }

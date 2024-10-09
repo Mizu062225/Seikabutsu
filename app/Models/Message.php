@@ -11,7 +11,7 @@ class Message extends Model
     
      protected $fillable = [
         'user_id',
-        'chatroom_id',
+        'chat_id',
         'body',
     ];
     
@@ -20,8 +20,4 @@ class Message extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function chatroom()
-    {
-        return $this->belongsTo(Chatroom::class);
-    }
 }
