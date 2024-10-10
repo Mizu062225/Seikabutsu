@@ -48,9 +48,9 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);  
     }
     
-    public function chatrooms()   
+    public function chats()   
     {
-        return $this->hasMany(Chatroom::class);  
+        return $this->hasMany(Chat::class, 'owner_id');  
     }
     
     public function likes()   

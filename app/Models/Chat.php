@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Chatroom extends Model
+class Chat extends Model
 {
     use HasFactory;
      protected $fillable = [
@@ -13,9 +13,14 @@ class Chatroom extends Model
         'guest_id',
     ];
     
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function guest()
+    {
+        return $this->belongsTo(User::class, 'guest_id');
     }
     
     public function messages()   
