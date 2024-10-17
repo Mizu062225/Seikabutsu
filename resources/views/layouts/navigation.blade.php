@@ -19,7 +19,10 @@
                         {{ __('Follow') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('chats.list') }}" :active="request()->routeIs('chats.list')">
-                        {{ __('Chats') }}
+                        {{ __('DM') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('profile.show', ['user' => Auth::user()->id]) }}" :active="request()->routeIs('profile.show')">
+                        {{ __('プロフィール') }}
                     </x-nav-link>
                 </div>
             </div>

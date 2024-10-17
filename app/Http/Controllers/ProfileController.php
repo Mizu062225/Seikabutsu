@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,22 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    
+     public function show($user)
+    {
+         // ユーザーIDからユーザーオブジェクトを取得
+        $user = User::findOrFail($user); // ここでユーザーオブジェクトを取得
+
+        // ユーザーの投稿一覧を取得
+        $posts = $user->posts()->latest()->get(); 
+
+        // フォロワー一覧
+        $followers = $user->followers; 
+
+        // フォローしているユーザー一覧
+        $followings = $user->followings;
+
+        return view('profile.show', compact('user', 'posts', 'followers', 'followings'));
     }
 }
