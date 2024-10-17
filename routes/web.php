@@ -55,4 +55,6 @@ Route::get('/chats', [ChatController::class, 'chatList'])->name('chats.list');
 Route::get('/chat/{user}', [ChatController::class, 'openChat'])->name('chat.open');
 Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
 
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
 require __DIR__.'/auth.php';
