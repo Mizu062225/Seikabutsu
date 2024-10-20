@@ -39,7 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/', [PostController::class, 'index'])->name('index');
-    Route::post('/like', [LikeController::class, 'store'])->name('like.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -56,5 +55,7 @@ Route::get('/chat/{user}', [ChatController::class, 'openChat'])->name('chat.open
 Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
 
 Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
+Route::post('/like', [LikeController::class, 'store'])->name('like.store');
 
 require __DIR__.'/auth.php';
